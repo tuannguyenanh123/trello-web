@@ -5,19 +5,18 @@ import Card from "../Card/Card";
 import "./Column.scss";
 import { mapOrder } from "../../utilities/Sort";
 
-const Column = ({ column }) => {
+const Column = ({ column, onCardDrop }) => {
   const cards = mapOrder(column.cards, column.cardOrder, "id");
 
-  const onCardDrop = (dropResult) => {
-    console.log(dropResult);
-  };
   return (
     <div className="column">
       <header className="column-drag-handle">{column.title}</header>
       <div className="card-list">
         <Container
           groupName="col"
-          onDrop={onCardDrop}
+          onDrop={(dropResult) => {
+            onCardDrop(column.id, dropResult);
+          }}
           getChildPayload={(index) => cards[index]}
           dragClass="card-ghost"
           dropClass="card-ghost-drop"
@@ -35,7 +34,12 @@ const Column = ({ column }) => {
           ))}
         </Container>
       </div>
-      <footer>Add other card</footer>
+      <footer>
+        <div className="footer-actions">
+          <i className="fa fa-plus icon"></i>
+          Add other card
+        </div>
+      </footer>
     </div>
   );
 };

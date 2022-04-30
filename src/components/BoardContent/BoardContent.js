@@ -6,6 +6,7 @@ import Column from "../column/Column";
 import "./BoardContent.scss";
 import { initData } from "../../Actions/initData";
 import { mapOrder } from "./../../utilities/Sort";
+import { applyDrag } from "./../../utilities/DragDrop";
 
 const BoardContent = () => {
   const [board, setBoard] = useState({});
@@ -36,9 +37,25 @@ const BoardContent = () => {
     );
   }
   const onColumnDrop = (dropResult) => {
-    console.log(dropResult);
+    let newColumns = [...columns];
+    newColumns = applyDrag(newColumns, dropResult);
+    // vì column nằm trong board nên khi cập nhật state cho column thì board cũng phải đc cập nhật
+    let newBoard = { ...board };
+    newBoard.columnOrder = newColumns.map((column) => column.id);
+    newBoard.columns = newColumns;
+    setColumns(newColumns);
+    setBoard(newBoard);
   };
 
+  const onCardDrop = (columnId, dropResult) => {
+    if (dropResult.removedIndex !== null || dropResult.addedIndex !== null) {
+      let newColumns = [...columns];
+      let currentColumn = newColumns.find((column) => column.id === columnId);
+      currentColumn.cards = applyDrag(currentColumn.cards, dropResult);
+      currentColumn.cardOrder = currentColumn.cards.map((card) => card.id);
+      setColumns(newColumns);
+    }
+  };
   return (
     <div className="board-content">
       <Container
@@ -54,10 +71,14 @@ const BoardContent = () => {
       >
         {columns.map((column, index) => (
           <Draggable key={index}>
-            <Column column={column} />
+            <Column column={column} onCardDrop={onCardDrop} />
           </Draggable>
         ))}
       </Container>
+      <div className="add-new-column">
+        <i className="fa fa-plus icon"></i>
+        Add other column
+      </div>
     </div>
   );
 };
