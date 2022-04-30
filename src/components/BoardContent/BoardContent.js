@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { isEmpty } from "lodash";
+import { Container, Draggable } from "react-smooth-dnd";
 
 import Column from "../column/Column";
 import "./BoardContent.scss";
@@ -34,12 +35,29 @@ const BoardContent = () => {
       </div>
     );
   }
+  const onColumnDrop = (dropResult) => {
+    console.log(dropResult);
+  };
 
   return (
     <div className="board-content">
-      {columns.map((column, index) => (
-        <Column key={index} column={column} />
-      ))}
+      <Container
+        orientation="horizontal"
+        onDrop={onColumnDrop}
+        dragHandleSelector=".column-drag-handle" // đặt css này vào element nào bạn muốn kéo, không đặt thì mặc định sẽ kéo ở bất kì chỗ nào đc bọc
+        dropPlaceholder={{
+          animationDuration: 150,
+          showOnTop: true,
+          className: "column-drop-preview",
+        }}
+        getChildPayload={(index) => columns[index]}
+      >
+        {columns.map((column, index) => (
+          <Draggable key={index}>
+            <Column column={column} />
+          </Draggable>
+        ))}
+      </Container>
     </div>
   );
 };
