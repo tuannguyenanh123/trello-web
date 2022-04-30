@@ -2,14 +2,12 @@
 
 $card-border-radius: 4px;
 
-li.card-item {
+.card-item {
   background-color: white;
   padding: $gap;
   border-radius: $card-border-radius;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-  &:not(:last-child) {
-    margin-bottom: $gap;
-  }
+  margin-bottom: $gap;
   img.card-img {
     display: block;
     width: calc(100% + 2 * #{$gap}); //100% cộng cho (20px)
@@ -17,4 +15,5 @@ li.card-item {
     border-top-left-radius: $card-border-radius;
     border-top-right-radius: $card-border-radius;
   }
+  cursor: pointer;
 }
