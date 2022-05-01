@@ -23,6 +23,26 @@ $column-height: calc(#{$board-content-height} - #{$gap * 2});
     border-top-left-radius: $column-border-radius;
     border-top-right-radius: $column-border-radius;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    .column-title {
+      flex: 9;
+    }
+    .column-dropDown-actions {
+      flex: 1;
+      button.dropDown-btn {
+        font-size: 16px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        &:after {
+          content: "...";
+          border: none;
+        }
+        &:hover {
+          background-color: darken($list-bg-color, 10);
+        }
+      }
+    }
   }
   footer {
     padding-left: #{$gap};
