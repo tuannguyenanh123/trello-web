@@ -22,9 +22,9 @@ const BoardContent = () => {
   const newColumnInputRef = useRef(null);
   const [newColumnTitle, setNewColumnTitle] = useState("");
 
-  const onNewColumnTitleChange = useCallback((e) => {
+  const onNewColumnTitleChange = (e) => {
     setNewColumnTitle(e.target.value);
-  }, []);
+  };
 
   useEffect(() => {
     const boardFromDb = initData.boards.find((board) => board.id === "board-1");
@@ -116,6 +116,7 @@ const BoardContent = () => {
       //remove column
       newColumns.splice(columnIndexToUpdate, 1);
     } else {
+      console.log(newColumnToUpdate);
       newColumns.splice(columnIndexToUpdate, 1, newColumnToUpdate);
     }
     // update state for board and columns
@@ -166,8 +167,8 @@ const BoardContent = () => {
                 size="sm"
                 type="text"
                 placeholder="Enter column title..."
-                // required
-                // isInvalid
+                required
+                isInvalid
                 ref={newColumnInputRef}
                 value={newColumnTitle}
                 onChange={onNewColumnTitleChange}
@@ -178,10 +179,7 @@ const BoardContent = () => {
               <Button variant="success" size="sm" onClick={handleAddNewColumn}>
                 Add Column
               </Button>
-              <span
-                className="cancel-new-column"
-                onClick={toggleOpenNewColumnForm}
-              >
+              <span className="cancel-icon" onClick={toggleOpenNewColumnForm}>
                 <i className="fa fa-trash icon"></i>
               </span>
             </Col>
